@@ -30,8 +30,7 @@
                     </a-form-item>
 
                     <div>
-                        <a-button :size="globalSizeStore.globalSize" class="w-full h-full" type="primary"
-                            html-type="submit">登录</a-button>
+                        <a-button class="w-full h-full" type="primary" html-type="submit">登录</a-button>
                     </div>
                     <div class="mt-4 h-8 leading-9">还没有创建账号? <a href="#/registry">创建新账号</a></div>
                 </a-form>

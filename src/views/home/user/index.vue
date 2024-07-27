@@ -13,8 +13,8 @@
             </a-form-item>
 
             <a-form-item>
-                <a-button :size="globalSizeStore.globalSize" type="primary" html-type="submit">查询</a-button>
-                <a-button :size="globalSizeStore.globalSize" class="ml-4" @click="resetForm">重置</a-button>
+                <a-button type="primary" html-type="submit">查询</a-button>
+                <a-button class="ml-4" @click="resetForm">重置</a-button>
             </a-form-item>
         </a-form>
     </div>
@@ -22,8 +22,8 @@
     <div class="p-5 bg-white mt-5">
         <!-- 操作按钮 -->
         <div class="mb-5">
-            <a-button type="primary" @click="addUser" :size="globalSizeStore.globalSize">新增用户</a-button>
-            <a-button class="ml-3" danger @click="delUser" :size="globalSizeStore.globalSize">批量删除</a-button>
+            <a-button type="primary" @click="addUser">新增用户</a-button>
+            <a-button class="ml-3" danger @click="delUser">批量删除</a-button>
         </div>
         <!-- 表格 -->
         <a-table :rowSelection="rowSelection" bordered :pagination="paginationConfig" :columns="columns"
@@ -36,19 +36,18 @@
                 <template v-else-if="column.key === 'role'">
                     <a-tag v-if="record.role.length" v-for="(item, index) in record.role" :key="index" :bordered="false"
                         color="processing">{{
-            item }}</a-tag>
+            item.name }}</a-tag>
                     <span v-else class="fz-12 text-rose-500">暂未分配角色</span>
                 </template>
 
                 <template v-else-if="column.key === 'action'">
                     <span>
                         <a-tooltip title="修改用户">
-                            <a-button :size="globalSizeStore.globalSize" @click="edit(record)" type="link">修改</a-button>
+                            <a-button @click="edit(record)" type="link">修改</a-button>
                         </a-tooltip>
                         <a-divider type="vertical" />
                         <a-tooltip title="删除角色">
-                            <a-button :size="globalSizeStore.globalSize" type="link" @click="del(record)"
-                                danger>删除</a-button>
+                            <a-button type="link" @click="del(record)" danger>删除</a-button>
                         </a-tooltip>
                     </span>
                 </template>
@@ -100,12 +99,10 @@ const onFinish = async (values?: FormState) => {
         data.value = res.data.list.map((v: any) => {
             return {
                 ...v,
-                role: v.roles.map((r: any) => r.name)
+                role: v.roles.map((r: any) => r)
             }
         })
         total.value = res.data.total
-        console.log(data.value);
-
     }
     isLoading.value = false;
 }

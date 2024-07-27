@@ -45,3 +45,12 @@ export const addUserApi = (data: any) => {
 export const editUserApi = (data: any) => {
     return postApi('/user/editUser', data)
 }
+
+
+
+/**
+ * 获取所有角色
+ */
+export const getRoleApi = () => {
+    return postApi('/role/getRole', {})
+}

@@ -20,36 +20,33 @@ const getTreeMenu = async () => {
     const res: any = await getRoute()
     if (res?.code == 200) {
         res.data = formatMenu(res.data)
+        console.log(res.data);
+
         menuItem.value = [...menuItem.value, ...res.data]
     }
 }
 
 // 处理菜单
 const formatMenu = (arr: any[]) => {
-    arr.forEach((r: any) => {
+    return arr.map((r: any): any => {
         const iconName: (keyof typeof icon) = r.menuIcon
-        r.icon = () => h(icon[iconName]);
-        r.key = r.path
-        r.label = r.name
-        r.title = r.name
-        r.disabled = r.isHidden
-        delete r.component
-        delete r.created_at
-        delete r.id
-        delete r.isHidden
-        delete r.isIframe
-        delete r.updated_at
-        delete r.menuType
-        delete r.name
-        delete r.menuIcon
-        if (r.children && r.children.length) {
-            formatMenu(r.children)
-        } else {
-            r.children = null;
+        const item = {
+            icon: () => h(icon[iconName]),
+            key: r.path,
+            label: r.name,
+            title: r.name,
+            disabled: r.isHidden,
+            children: r.children
         }
+        if (r.children && r.children.length) {
+            item.children = formatMenu(r.children)
+        } else {
+            item.children = null;
+        }
+        return item;
     });
-    return arr
 }
+
 
 
 const selectedKeys = ref<string[]>(['dashboard']);
