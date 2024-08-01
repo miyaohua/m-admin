@@ -46,7 +46,7 @@
                             <a-button @click="edit(record)" type="link">修改</a-button>
                         </a-tooltip>
                         <a-divider type="vertical" />
-                        <a-tooltip title="删除角色">
+                        <a-tooltip title="删除用户">
                             <a-button type="link" @click="del(record)" danger>删除</a-button>
                         </a-tooltip>
                     </span>
@@ -62,8 +62,7 @@
 import { reactive, ref, onMounted } from 'vue';
 import { getAllUserApi, delUserApi, changeUserStatusApi } from '@/apis/user'
 import { useGlobalSizeStore } from '@/store/globalSize'
-import { message } from 'ant-design-vue'
-import { Modal } from 'ant-design-vue';
+import { message,Modal } from 'ant-design-vue'
 import addChange from './addChange.vue'
 
 const globalSizeStore = useGlobalSizeStore();

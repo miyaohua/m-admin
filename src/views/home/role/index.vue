@@ -14,18 +14,22 @@
 
     <div class="p-5 bg-white mt-5">
         <!-- 操作按钮 -->
-        <!-- <div class="mb-5">
-            <a-button type="primary" @click="addUser" :size="globalSizeStore.globalSize">新增用户</a-button>
-            <a-button class="ml-3" danger @click="delUser" :size="globalSizeStore.globalSize">批量删除</a-button>
-        </div> -->
+        <div class="mb-5">
+            <a-button type="primary" @click="addRole">新增角色</a-button>
+            <a-button class="ml-3" danger @click="delRole">批量删除</a-button>
+        </div>
         <!-- 表格 -->
         <a-table :rowSelection="rowSelection" bordered :pagination="paginationConfig" :columns="columns"
             :data-source="data" :loading="isLoading" @change="changeFn" :row-key="(record: any) => record.id">
+            <template #expandedRowRender="{ record }">
+                <div v-for="(item, index) in record.permissionGroups" :key="index">
+                    {{ item.name }}
+                </div>
+            </template>
             <template #bodyCell="{ column, record }">
-
                 <template v-if="column.key === 'action'">
                     <span>
-                        <a-tooltip title="修改用户">
+                        <a-tooltip title="修改角色">
                             <a-button @click="edit(record)" type="link">修改</a-button>
                         </a-tooltip>
                         <a-divider type="vertical" />
@@ -41,8 +45,9 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { useGlobalSizeStore } from '@/store/globalSize'
-const globalSizeStore = useGlobalSizeStore();
+import { getAllRoleApi, delAllRoleApi } from '@/apis/role'
+import { message, Modal } from 'ant-design-vue'
+
 
 interface FormState {
     name: string;
@@ -52,6 +57,7 @@ const formState = reactive<FormState>({
     name: '',
 });
 
+
 onMounted(() => {
     getAllRole()
 })
@@ -59,14 +65,22 @@ onMounted(() => {
 const getAllRole = () => {
     onFinish(formState)
 }
-
-const onFinish = (values?: FormState) => {
+const onFinish = async (values?: FormState) => {
     console.log(values)
+    const res: any = await getAllRoleApi({
+        pageSize: pageSize.value,
+        pageNum: pageNum.value,
+        values
+    })
+    if (res?.code == 200) {
+        data.value = res.data.list
+        total.value = res.data.total
+    }
 }
 
 const resetForm = () => {
     formRef.value.resetFields()
-    // getAllUser()
+    getAllRole()
 }
 
 
@@ -75,9 +89,10 @@ const resetForm = () => {
 const pageNum = ref(1);
 const pageSize = ref(5);
 const total = ref(0)
+const data: any = ref([])
 
 const isLoading = ref<Boolean>(false)
-const data: any = ref([])
+
 
 const columns = ref([
     {
@@ -138,8 +153,60 @@ const changeFn = (pagination: any) => {
     getAllRole()
 }
 
-const edit = (row: any) => {
-    // addChangeRef.value.showModal(row)
+
+const edit = (record: any) => {
+    console.log(record)
+}
+
+/**
+ * 删除单个角色
+ * @param record 
+ */
+const del = async (record: any) => {
+    const { id } = record
+    Modal.confirm({
+        title: '确认',
+        content: '该操作将永久删除该角色',
+        okText: '确定',
+        cancelText: '取消',
+        async onOk() {
+            const res: any = await delAllRoleApi({
+                ids: [id]
+            })
+            if (res?.code == 200) {
+                message.success('删除成功')
+                getAllRole()
+            }
+        }
+    });
+
+}
+
+/**
+ * 批量删除角色
+ */
+const delRole = () => {
+    if (!selectedRowKeys.value.length) {
+        return message.warning('请至少选择一个角色进行删除')
+    }
+    Modal.confirm({
+        title: '确认',
+        content: '该操作将永久删除该角色',
+        okText: '确定',
+        cancelText: '取消',
+        async onOk() {
+            const res: any = await delAllRoleApi({ ids: selectedRowKeys.value })
+            if (res?.code == 200) {
+                message.success('删除成功')
+                getAllRole()
+                selectedRowKeys.value = []
+            }
+        }
+    });
+}
+
+const addRole = () => {
+    console.log('addRole')
 }
 
 </script>
