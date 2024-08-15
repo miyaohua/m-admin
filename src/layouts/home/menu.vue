@@ -20,9 +20,13 @@ const getTreeMenu = async () => {
     const res: any = await getRoute()
     if (res?.code == 200) {
         res.data = formatMenu(res.data)
-        console.log(res.data);
-
         menuItem.value = [...menuItem.value, ...res.data]
+        // 恢复选中状态
+        const savedSelectedKeys = JSON.parse(localStorage.getItem('selectedKeys') || '[]');
+        const savedOpenKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
+
+        selectedKeys.value = savedSelectedKeys.length ? savedSelectedKeys : ['/dashboard'];
+        openKeys.value = savedOpenKeys.length ? savedOpenKeys : ['/dashboard'];
     }
 }
 
@@ -49,8 +53,8 @@ const formatMenu = (arr: any[]) => {
 
 
 
-const selectedKeys = ref<string[]>(['dashboard']);
-const openKeys = ref(['dashboard'])
+const selectedKeys = ref<string[]>(['/dashboard']);
+const openKeys = ref(['/dashboard'])
 // 菜单列表
 const menuItem = ref([
     {
@@ -61,9 +65,14 @@ const menuItem = ref([
     }
 ])
 
-const menuClick = (item) => {
+const menuClick = (item: any) => {
     router.push(item.key)
+    // 更新本地存储
+    localStorage.setItem('selectedKeys', JSON.stringify([item.key]));
+    localStorage.setItem('openKeys', JSON.stringify([item.keyPath[0]]));
 }
+
+
 </script>
 
 

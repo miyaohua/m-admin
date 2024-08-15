@@ -8,8 +8,25 @@
             <Menu />
         </a-layout-sider>
 
+        <a-drawer class="mobile" :bodyStyle="{
+            backgroundColor: '#000',
+            padding: '0'
+        }" :headerStyle="{
+            textAlign: 'center',
+            backgroundColor: '#000'
+        }" width="250" placement="left" :closable="false" :open="openMobileMenu" @close="onClose">
+            <div class="h-15 leading-15 text-center text-white">{{ appName }}</div>
+            <Menu />
+        </a-drawer>
+
         <a-layout>
+            <!-- 移动端侧边栏 -->
+            <div class="mobile-column" @click="toggleMobileColumn">
+                <MenuOutlined style="font-size:20px" />
+            </div>
+
             <a-layout-header class="flex justify-between p-0! pr-3! bg-white! h-12!">
+
                 <div class="flex items-center justify-center">
                     <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
                     <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
@@ -36,8 +53,6 @@
                         class="mr-1 w-8 h-full flex items-center justify-center hover:bg-slate-200 cursor-pointer">
                         <SettingOutlined />
                     </div>
-                    <div class="mr-2 ml-2 fz-12">米友</div>
-
                     <div class="h-full flex items-center justify-center cursor-pointer">
                         <a-dropdown :trigger="['click']">
                             <a-avatar class="cursor-pointer">
@@ -77,7 +92,6 @@
 <script lang="ts" setup>
 import Config from './config/index.vue'
 const appName = import.meta.env.VITE_APP_NAME
-import Cookie from 'js-cookie'
 import { message, Modal } from 'ant-design-vue';
 import Menu from './menu.vue'
 import { ref } from 'vue';
@@ -88,7 +102,8 @@ import {
     SettingOutlined,
     ExpandOutlined,
     SearchOutlined,
-    CloudOutlined
+    CloudOutlined,
+    MenuOutlined
 } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 
@@ -103,7 +118,7 @@ const logout = () => {
         okText: '确定',
         cancelText: '取消',
         async onOk() {
-            Cookie.remove('token')
+            window.localStorage.removeItem('token')
             router.push('/login')
             message.success('登出成功！')
         }
@@ -130,6 +145,16 @@ const openSettingConfig = () => {
 
 const jumpVpske = () => {
     window.open('https://www.vpske.cn')
+}
+
+
+let openMobileMenu = ref(false)
+const toggleMobileColumn = () => {
+    openMobileMenu.value = true;
+}
+
+const onClose = () => {
+    openMobileMenu.value = false;
 }
 </script>
 
@@ -178,6 +203,22 @@ const jumpVpske = () => {
     background: #fff;
 }
 
+.mobile-column {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 80%;
+    left: 2px;
+    display: none;
+    z-index: 99;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 2px 0 8px #00000026;
+    border-radius: 0 4px 4px 0;
+    justify-content: center;
+    align-items: center;
+}
+
 // 小于768px
 @media screen and (max-width: 768px) {
     :deep(.ant-layout-sider) {
@@ -188,10 +229,11 @@ const jumpVpske = () => {
         max-width: unset !important;
         height: 100%;
         z-index: 99;
+        transform: translate(-200px);
     }
 
-    :deep(.ant-menu) {
-        display: none;
+    .mobile-column {
+        display: flex
     }
 
     .title {
@@ -207,7 +249,7 @@ const jumpVpske = () => {
     }
 }
 
-.fz-12 {
-    font-size: 12px
+.fz-14 {
+    font-size: 14px
 }
 </style>

@@ -3,6 +3,7 @@ import { getAccessToken, getRouteInfo, GlobalTitle } from "./configMethod";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { message } from "ant-design-vue";
+
 let hasGetUserInfo = false;
 
 // 白名单列表
@@ -12,7 +13,6 @@ export const guard = (router: Router) => {
     router.beforeEach(async (to, from, next) => {
         NProgress.start()
         GlobalTitle(to);
-
         if (getAccessToken()) {
             if (to.path == '/login') {
                 return next({ path: '/dashboard' })
@@ -36,7 +36,6 @@ export const guard = (router: Router) => {
                 return next({ path: '/login' })
             }
         }
-
         next()
     })
 

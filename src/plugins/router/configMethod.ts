@@ -1,12 +1,12 @@
 import { getFlatRoute } from '@/apis/route'
-import Cookies from "js-cookie";
 const appName = import.meta.env.VITE_APP_NAME
 
 /**
  * 是否登录成功
  */
-export const getAccessToken = (): boolean => {
-    return Cookies.get('token')
+export const getAccessToken = () => {
+    const token = window.localStorage.getItem('token');
+    return token
 }
 
 /**

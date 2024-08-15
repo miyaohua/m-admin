@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Cookie from 'js-cookie'
 import { message } from 'ant-design-vue';
 import router from '@/plugins/router'
 import NProgress from 'nprogress'
@@ -14,8 +13,9 @@ const http = axios.create({
 http.interceptors.request.use(function (config) {
     NProgress.start()
     // 在发送请求之前做些什么
-    if (Cookie.get('token')) {
-        config.headers.Authorization = `Bearer ${Cookie.get('token')}`
+
+    if (window.localStorage.getItem('token')) {
+        config.headers.Authorization = `Bearer ${window.localStorage.getItem('token')}`
     }
     return config;
 }, function (error) {
@@ -38,8 +38,7 @@ http.interceptors.response.use(function (response) {
             message.error('暂无权限，请稍后再试！');
             break;
         case 401:
-            message.error('登录已过期！');
-            Cookie.remove('token');
+            window.localStorage.removeItem('token')
             setTimeout(() => {
                 router.push({ path: '/login' })
             }, 1500)
