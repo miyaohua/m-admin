@@ -18,7 +18,7 @@
 
 </div>
 
-## 介绍（Introduce）
+## 项目介绍（Project Introduce）
 
 M-Admin 基于 VUE3 + Vite + AntdVue + Pinia 实现的一款后台管理框架。
 
