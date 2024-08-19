@@ -9,7 +9,7 @@
 	<a href="https://v3.vuejs.org/" target="_blank">
 		<img src="https://img.shields.io/badge/Vue.js-3.x-green" alt="Vue">
 	</a>
-	<a href="https://element-plus.org/#/zh-CN/component/changelog" target="_blank">
+	<a href="https://www.antdv.com/components/icon-cn" target="_blank">
 		<img src="https://img.shields.io/badge/antd-vue-blue" alt="antd vue">
 	</a>
 </p>
