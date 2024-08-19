@@ -54,7 +54,7 @@ We provide NestJS backend program that works with this frontend [M-Server](https
 git clone https://github.com/miyaohua/m-admin
 
 # 进入项目目录
-cd fc-admin
+cd m-admin
 
 # 安装依赖
 npm i
