@@ -41,7 +41,7 @@ http.interceptors.response.use(function (response) {
             window.localStorage.removeItem('token')
             setTimeout(() => {
                 router.push({ path: '/login' })
-            }, 1500)
+            }, 1000)
             break;
         case 500:
             message.error('请求失败，请稍后再试！');

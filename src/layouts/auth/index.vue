@@ -12,7 +12,7 @@
 
 <style scoped lang="scss">
 .login-bg {
-    background: url('https://www.fcadmin.fun/img/auth_banner.jpg') no-repeat;
+    background: url('@/assets/auth_banner.jpg') no-repeat;
     background-size: 100% 100%;
 }
 </style>
