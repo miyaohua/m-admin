@@ -15,6 +15,14 @@ export default [
                 meta: {
                     title: '登录'
                 }
+            },
+            {
+                path: 'registry',
+                name: 'registry',
+                component: () => import('@/views/auth/registry.vue'),
+                meta: {
+                    title: '注册'
+                }
             }
         ]
     },

@@ -10,7 +10,6 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import type { TreeProps } from 'ant-design-vue';
-import { getRoute } from '@/apis/route'
 import { allMenuApi, allocationMenuApi } from '@/apis/role'
 import { message } from 'ant-design-vue'
 

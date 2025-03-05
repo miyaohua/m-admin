@@ -1,0 +1,1 @@
+import{d as s,q as a,w as o,u as n,B as r,l as c,o as d,m as p}from"./index-JJX_8eow.js";const m=s({__name:"index",setup(u){const t=()=>{console.log("test"),p.success("dashboard")};return(i,e)=>(d(),a(n(r),{type:"primary",onClick:t},{default:o(()=>e[0]||(e[0]=[c("dashboard")])),_:1}))}});export{m as default};

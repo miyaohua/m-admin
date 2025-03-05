@@ -52,7 +52,7 @@
                                 <div class="icon-wrap">
                                     <span @click="selectIcon(iconName)" v-for="(iconName, index) in iconNames"
                                         :key="index" class="icon-item">
-                                        <!-- 设置tooltip会有明显卡顿，待优化 -->
+                                        <!-- 设置tooltip会有明显卡顿，待优化 todo -->
                                         <!-- <a-tooltip placement="topLeft" :title="iconName"> -->
                                         <component :is="icon[iconName]" />
                                         <!-- </a-tooltip> -->
@@ -70,8 +70,8 @@
 
 
 <script setup lang="ts">
-import { menuByNumApi, addMenuApi } from '@/apis/menu';
-import { ref, defineExpose, computed, defineEmits } from 'vue'
+import { menuByNumApi, addMenuApi, editMenuApi } from '@/apis/menu';
+import { ref, computed, defineEmits } from 'vue'
 import { EllipsisOutlined } from '@ant-design/icons-vue'
 import * as icon from '@ant-design/icons-vue/es/icons/index';
 
@@ -83,6 +83,7 @@ const iconNames = Object.keys(icon);
 const open = ref(false)
 
 const editId = ref('')
+
 
 const formRef = <any>ref(null)
 
@@ -112,8 +113,32 @@ const typeChange = (value: string) => {
     }
 }
 
-const openDialog = (id: string) => {
-    editId.value = id
+const openDialog = (editInfo: any) => {
+    if (editInfo) {
+        editId.value = editInfo.id
+        formState.value = {
+            fid: editInfo.fid,
+            name: editInfo.name,
+            path: editInfo.path,
+            menuType: editInfo.menuType,
+            component: editInfo.component,
+            isHidden: editInfo.isHidden ? '0' : '1',
+            icon: editInfo.menuIcon,
+        }
+    } else {
+        editId.value = ''
+        formState.value = {
+            fid: '',
+            name: '',
+            path: '',
+            menuType: '',
+            component: '',
+            isHidden: '',
+            icon: ''
+        }
+    }
+
+
     open.value = true
     // 获取所有菜单数据
     getAllMenu()
@@ -134,7 +159,6 @@ const selectIcon = (iconName: string) => {
 const handleMenu = (menu: any) => {
     // 过滤出菜单类型为目录的数据
     return menu
-        // .filter((r: any) => r.menuType == 'M')
         .map((item: any) => {
             return {
                 value: item.id,
@@ -147,28 +171,46 @@ const handleMenu = (menu: any) => {
 
 
 const handleOk = () => {
-    console.log('handleOk', formState.value)
     formRef.value
         .validate()
         .then(async () => {
-            const value = {
-                name: formState.value.name,
-                path: formState.value.path,
-                isHidden: formState.value.isHidden == 0,
-                component: formState.value.component,
-                isIframe: false,
-                menuType: formState.value.menuType,
-                parentId: formState.value.fid,
-                menuIcon: formState.value.icon,
-            }
-            const res: any = await addMenuApi(value)
-            if (res?.code == 200) {
-                open.value = false
-                formRef.value.resetFields();
-                emits('refreshData')
+            if (editId.value) {
+                const res: any = await editMenuApi({
+                    id: editId.value,
+                    name: formState.value.name,
+                    path: formState.value.path,
+                    component: formState.value.component,
+                    isIframe: false,
+                    menuType: formState.value.menuType,
+                    parentId: formState.value.fid,
+                    menuIcon: formState.value.icon,
+                    isHidden: formState.value.isHidden == 0,
+                })
+                if (res?.code == 200) {
+                    open.value = false
+                    formRef.value.resetFields();
+                    emits('refreshData')
+                }
+            } else {
+                const value = {
+                    name: formState.value.name,
+                    path: formState.value.path,
+                    isHidden: formState.value.isHidden == 0,
+                    component: formState.value.component,
+                    isIframe: false,
+                    menuType: formState.value.menuType,
+                    parentId: formState.value.fid,
+                    menuIcon: formState.value.icon,
+                }
+                const res: any = await addMenuApi(value)
+                if (res?.code == 200) {
+                    open.value = false
+                    formRef.value.resetFields();
+                    emits('refreshData')
+                }
             }
         })
-        .catch((error: any) => {
+        .catch(() => {
         });
 }
 

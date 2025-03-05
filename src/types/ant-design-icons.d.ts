@@ -1,0 +1,1 @@
+declare module '@ant-design/icons-vue/es/icons/index';

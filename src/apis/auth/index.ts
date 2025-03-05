@@ -1,4 +1,4 @@
-import { getApi, postApi } from "@/utils/request";
+import { postApi } from "@/utils/request";
 
 
 /**

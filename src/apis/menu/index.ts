@@ -26,3 +26,12 @@ export const delMenuApi = (data: any) => {
 export const addMenuApi = (data: any) => {
     return postApi('/menu', data)
 }
+
+/**
+ * 修改菜单
+ * @param data 
+ * @returns 
+ */
+export const editMenuApi = (data: any) => {
+    return postApi('/menu/edit', data)
+}

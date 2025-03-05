@@ -33,7 +33,7 @@
           </div>
           <div class="mt-4 h-8 leading-9">还没有创建账号? <a href="#/registry">创建新账号</a></div>
         </a-form>
-        <a-divider plain>其他登录方式</a-divider>
+        <a-divider @click="other" plain>其他登录方式</a-divider>
         <div class="flex justify-center">
           <!-- 微信 -->
           <svg @click="jumpLogin('wechat')" t="1721178508955" class="icon cursor-pointer" viewBox="0 0 1024 1024"
@@ -70,6 +70,8 @@ import { loginApi, getPicCodeApi } from '@/apis/auth'
 import { useRouter } from 'vue-router'
 import type { Rule } from 'ant-design-vue/es/form';
 import { emailReg, passReg, picCodeReg } from '@/utils/reg'
+import OpenAI from "openai";
+
 
 const router = useRouter();
 
@@ -185,6 +187,28 @@ const jumpLogin = (key: string) => {
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
+
+const other = () => {
+
+  const openai = new OpenAI({
+    baseURL: 'https://api.deepseek.com',
+    apiKey: 'sk-d75a60a935184c6094c039f46e986ffc',
+    dangerouslyAllowBrowser: true
+  });
+
+  async function main() {
+    const completion = await openai.chat.completions.create({
+      messages: [{
+        role: "system", content: `场景：会议上，两名同事因方案分歧激烈争吵，其中一人突然摔门离开。
+问题：你会如何应对？请具体描述你的行动步骤和沟通策略。我的答案：追到那个人，并且劝他一下。请给出完善的答案` }],
+      model: "deepseek-chat",
+    });
+
+    console.log(completion.choices[0].message.content);
+  }
+
+  main();
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,8 +1,12 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { message } from 'ant-design-vue';
 import router from '@/plugins/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+
+interface CustomAxiosResponse<T = any> extends AxiosResponse<T> {
+    code?: number;
+}
 
 const http = axios.create({
     baseURL: import.meta.env.VITE_API,
@@ -64,7 +68,7 @@ export default http
  * @returns 
  */
 const getApi = (url: string, params?: any) => {
-    return http.get(url, { params })
+    return http.get<CustomAxiosResponse>(url, { params })
 }
 
 /**
@@ -74,7 +78,7 @@ const getApi = (url: string, params?: any) => {
  * @returns 
  */
 const postApi = (url: string, data: any) => {
-    return http.post(url, data)
+    return http.post<CustomAxiosResponse>(url, data)
 }
 
 /**
@@ -84,7 +88,7 @@ const postApi = (url: string, data: any) => {
  * @returns 
  */
 const patchApi = (url: string, data: any) => {
-    return http.patch(url, data)
+    return http.patch<CustomAxiosResponse>(url, data)
 }
 
 
@@ -95,7 +99,7 @@ const patchApi = (url: string, data: any) => {
  * @returns 
  */
 const deleteApi = (url: string) => {
-    return http.delete(url)
+    return http.delete<CustomAxiosResponse>(url)
 }
 
 export { getApi, postApi, patchApi, deleteApi }

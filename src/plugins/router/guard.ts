@@ -7,10 +7,10 @@ import { message } from "ant-design-vue";
 let hasGetUserInfo = false;
 
 // 白名单列表
-const whileList = ['/login']
+const whileList = ['/login', '/registry']
 export const guard = (router: Router) => {
     // 路由加载前的一些操作
-    router.beforeEach(async (to, from, next) => {
+    router.beforeEach(async (to, _from, next) => {
         NProgress.start()
         GlobalTitle(to);
         if (getAccessToken()) {
@@ -33,6 +33,7 @@ export const guard = (router: Router) => {
         } else {
             if (!whileList.includes(to.path)) {
                 message.error('登录已过期！');
+                hasGetUserInfo = false;
                 return next({ path: '/login' })
             }
         }
@@ -44,7 +45,7 @@ export const guard = (router: Router) => {
         NProgress.done()
     })
 
-    router.onError((error: any) => {
+    router.onError(() => {
         NProgress.done()
     })
 }

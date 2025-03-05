@@ -35,7 +35,7 @@ const activeKey = ref([])
 const roleId = ref('');
 
 const getPermissions = async () => {
-  const res: any = await getPermissionsApi({})
+  const res: any = await getPermissionsApi()
   if (res?.code == 200) {
     activeKey.value = res.data.map((v: any) => v.id)
     res.data.forEach((v: any) => {

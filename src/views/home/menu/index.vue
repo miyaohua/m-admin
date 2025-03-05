@@ -50,6 +50,9 @@
 
                 <!-- 操作 -->
                 <template v-if="column.key === 'action'">
+                    <a-tooltip title="修改菜单">
+                        <a-button type="link" @click="editMenu(record)">修改</a-button>
+                    </a-tooltip>
                     <a-tooltip title="删除菜单">
                         <a-button type="link" danger @click="delMenu(record)">删除</a-button>
                     </a-tooltip>
@@ -57,12 +60,12 @@
             </template>
         </a-table>
     </div>
-    <addMenu ref="addMenuRef" @refreshData="queryMenu"/>
+    <addMenu ref="addMenuRef" @refreshData="queryMenu" />
 </template>
 
 <script setup lang="ts">
 import { menuByNumApi, delMenuApi } from '@/apis/menu';
-import { ref, reactive, onMounted, DefineComponent } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import * as icon from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import addMenu from './addMenu.vue';
@@ -104,6 +107,24 @@ const addMenuFn = () => {
     addMenuRef.value.openDialog()
 }
 
+// 修改菜单
+const editMenu = (row: any) => {
+    const f = (arr: any) => {
+        arr.forEach((item: any) => {
+            item.children && item.children.length && item.children.forEach((child: any) => {
+                if (row.id == child.id) {
+                    row.fid = item.id;
+                } else {
+                    f(item.children)
+                }
+            })
+        })
+    }
+    f(data.value)
+    if (!row.fid) row.fid = 0
+    addMenuRef.value.openDialog(row)
+}
+
 // 删除菜单
 const delMenu = (row: any) => {
     const { id } = row
@@ -125,11 +146,9 @@ const delMenu = (row: any) => {
 }
 
 // 获取图标
-const getIcon = (iconName: string): DefineComponent | null => {
+const getIcon = (iconName: string): any => {
     return icon[iconName as keyof typeof icon] || null;
 }
-
-
 
 const data: any = ref([])
 const isLoading = ref<Boolean>(false)

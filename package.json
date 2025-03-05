@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
-    "@types/nprogress": "^0.2.3",
     "ant-design-vue": "4.x",
     "axios": "^1.6.8",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
+    "openai": "^4.86.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "sass": "^1.75.0",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
