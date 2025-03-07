@@ -11,10 +11,6 @@ const url = {
     "登录页": "/login",
     "注册页": "/registry",
     "忘记密码": "/forgotpassword",
-    "首页": "/",
-    "小程序": "/program",
-    "工具类": "/tool",
-    "赞助商家": "/sponsor",
 }
 const whileList = Object.values(url)
 
