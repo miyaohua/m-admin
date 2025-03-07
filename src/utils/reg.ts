@@ -6,5 +6,9 @@ export const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".
 export const passReg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^a-zA-Z0-9]+$).{6,20}$/;
 
 
-// 验证码
+// 图片验证码
 export const picCodeReg = /.{4}/
+
+// 邮箱验证码
+export const emailCodeReg = /.{6}/
+

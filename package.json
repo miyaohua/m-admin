@@ -12,6 +12,7 @@
     "@ant-design/icons-vue": "^7.0.1",
     "ant-design-vue": "4.x",
     "axios": "^1.6.8",
+    "dayjs": "^1.11.13",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "openai": "^4.86.1",

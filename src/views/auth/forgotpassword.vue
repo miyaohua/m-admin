@@ -2,7 +2,7 @@
     <div class="h-full w-1/1! flex justify-center">
       <div class="w-4/5 h-full md:w-2/5">
         <div class="w-full h-full pt-55">
-          <div class="mb-10 text-center text-xl font-bold">{{ appName }} - 注册</div>
+          <div class="mb-10 text-center text-xl font-bold">{{ appName }} - 忘记密码</div>
           <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed">
   
             <a-form-item name="email" :rules="[{ validator: checkEmail, trigger: ['change', 'blur'] }]">
@@ -21,7 +21,7 @@
             </a-form-item>
   
             <div>
-              <a-button class="w-full h-full" type="primary" html-type="submit">注册</a-button>
+              <a-button class="w-full h-full" type="primary" html-type="submit">重置密码</a-button>
             </div>
             <div class="mt-4 h-8 leading-9">已有账号？<a @click="router.push('/login')">去登录</a></div>
           </a-form>
@@ -39,7 +39,7 @@
   import { useRouter } from 'vue-router'
   import type { Rule } from 'ant-design-vue/es/form';
   import { emailReg, passReg,emailCodeReg } from '@/utils/reg'
-import { userRegistrySendEmailApi,registryApi } from '@/apis/auth';
+  import { forgotPasswordApi, forgotPasswordSendEmailApi } from '@/apis/auth'
   
   
   const router = useRouter();
@@ -99,7 +99,7 @@ import { userRegistrySendEmailApi,registryApi } from '@/apis/auth';
     } else if (!flag) {
       return message.error('请输入合法的邮箱')
     }
-    const res:any = await userRegistrySendEmailApi({
+    const res:any = await forgotPasswordSendEmailApi({
         email:formState.email
     })
     if(res?.code == 200){
@@ -118,20 +118,20 @@ import { userRegistrySendEmailApi,registryApi } from '@/apis/auth';
   
   
   /**
-   * 登录
+   * 重置
    * @param values
    */
   const onFinish = async (values: any) => {
-    const res: any = await registryApi({ ...values })
-    if (res?.code == 200) {
-      message.success('注册成功！')
-      setTimeout(() => {
+    const res:any = await forgotPasswordApi(values)
+    if(res?.code == 200){
+        message.success('重置密码成功')
+        setTimeout(() => {
         router.push('/login')
       }, 500)
-    } 
+    }
   };
   
-  
+
   /**
    * 验证错误
    * @param errorInfo
@@ -139,6 +139,8 @@ import { userRegistrySendEmailApi,registryApi } from '@/apis/auth';
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
+  
   </script>
   
   <style scoped lang="scss">

@@ -23,6 +23,14 @@ export default [
                 meta: {
                     title: '注册'
                 }
+            },
+            {
+                path: 'forgotpassword',
+                name: 'forgotpassword',
+                component: () => import('@/views/auth/forgotpassword.vue'),
+                meta: {
+                    title: '忘记密码'
+                }
             }
         ]
     },

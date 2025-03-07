@@ -54,3 +54,13 @@ export const editUserApi = (data: any) => {
 export const getRoleApi = () => {
     return postApi('/role/getRole', {})
 }
+
+
+
+/**
+ * 获取个人信息
+ * @returns 
+ */
+export const getUserInfoApi = () => {
+    return postApi('/user/getUserInfo', {})
+}

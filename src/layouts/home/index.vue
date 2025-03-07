@@ -63,13 +63,10 @@
                             <template #overlay>
                                 <a-menu>
                                     <a-menu-item key="0">
-                                        <a href="http://www.alipay.com/">个人信息</a>
-                                    </a-menu-item>
-                                    <a-menu-item key="1">
-                                        <a href="http://www.taobao.com/">消息通知</a>
+                                        <a @click="router.push('/other/userinfo')">个人信息</a>
                                     </a-menu-item>
                                     <a-menu-divider />
-                                    <a-menu-item key="3" @click="logout">退出登录</a-menu-item>
+                                    <a-menu-item key="1" @click="logout">退出登录</a-menu-item>
                                 </a-menu>
                             </template>
                         </a-dropdown>

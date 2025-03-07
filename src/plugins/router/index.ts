@@ -4,7 +4,7 @@ import routes from './route'
 import { guard } from './guard'
 
 const router = VueRouter.createRouter({
-    history: VueRouter.createWebHashHistory(),
+    history: VueRouter.createWebHistory(),
     routes,
 })
 

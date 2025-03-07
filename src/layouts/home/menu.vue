@@ -32,7 +32,8 @@ const getTreeMenu = async () => {
 
 // 处理菜单
 const formatMenu = (arr: any[]) => {
-    return arr.map((r: any): any => {
+    // 过滤不展示的菜单
+    return arr.filter(v => !v.isHidden).map((r: any): any => {
         const iconName: (keyof typeof icon) = r.menuIcon
         const item = {
             icon: () => h(icon[iconName]),
@@ -42,13 +43,15 @@ const formatMenu = (arr: any[]) => {
             disabled: r.isHidden,
             children: r.children
         }
+
+
         if (r.children && r.children.length) {
             item.children = formatMenu(r.children)
         } else {
             item.children = null;
         }
         return item;
-    });
+    })
 }
 
 

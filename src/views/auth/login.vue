@@ -2,7 +2,7 @@
   <div class="h-full w-1/1! flex justify-center">
     <div class="w-4/5 h-full md:w-2/5">
       <div class="w-full h-full pt-55">
-        <div class="mb-10 text-center text-xl font-bold">{{ appName }}</div>
+        <div class="mb-10 text-center text-xl font-bold">{{ appName }} - 登录</div>
         <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed">
 
           <a-form-item name="email" :rules="[{ validator: checkEmail, trigger: ['change', 'blur'] }]">
@@ -31,9 +31,9 @@
           <div>
             <a-button class="w-full h-full" type="primary" html-type="submit">登录</a-button>
           </div>
-          <div class="mt-4 h-8 leading-9">还没有创建账号? <a href="#/registry">创建新账号</a></div>
+          <div class="mt-4 h-8 leading-9">还没有创建账号? <a @click="router.push('registry')">创建新账号</a></div>
         </a-form>
-        <a-divider @click="other" plain>其他登录方式</a-divider>
+        <a-divider plain>其他登录方式</a-divider>
         <div class="flex justify-center">
           <!-- 微信 -->
           <svg @click="jumpLogin('wechat')" t="1721178508955" class="icon cursor-pointer" viewBox="0 0 1024 1024"
@@ -70,7 +70,6 @@ import { loginApi, getPicCodeApi } from '@/apis/auth'
 import { useRouter } from 'vue-router'
 import type { Rule } from 'ant-design-vue/es/form';
 import { emailReg, passReg, picCodeReg } from '@/utils/reg'
-import OpenAI from "openai";
 
 
 const router = useRouter();
@@ -83,8 +82,8 @@ interface FormState {
 }
 
 const formState = reactive<FormState>({
-  email: '2542571191@qq.com',
-  password: 'mi010409',
+  email: '',
+  password: '',
   code: '',
   remember: true,
 });
@@ -162,7 +161,7 @@ const onFinish = async (values: any) => {
  * 忘记密码
  */
 const forgotPassword = () => {
-
+  router.push('/forgotpassword')
 }
 
 /**
@@ -172,7 +171,7 @@ const forgotPassword = () => {
 const jumpLogin = (key: string) => {
   switch (key) {
     case 'wechat':
-      console.log('微信登录')
+      message.error('暂未开放微信登录')
       break;
 
     default:
@@ -187,28 +186,6 @@ const jumpLogin = (key: string) => {
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
-
-const other = () => {
-
-  const openai = new OpenAI({
-    baseURL: 'https://api.deepseek.com',
-    apiKey: 'sk-d75a60a935184c6094c039f46e986ffc',
-    dangerouslyAllowBrowser: true
-  });
-
-  async function main() {
-    const completion = await openai.chat.completions.create({
-      messages: [{
-        role: "system", content: `场景：会议上，两名同事因方案分歧激烈争吵，其中一人突然摔门离开。
-问题：你会如何应对？请具体描述你的行动步骤和沟通策略。我的答案：追到那个人，并且劝他一下。请给出完善的答案` }],
-      model: "deepseek-chat",
-    });
-
-    console.log(completion.choices[0].message.content);
-  }
-
-  main();
-}
 </script>
 
 <style scoped lang="scss">
